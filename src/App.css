@@ -1,5 +1,11 @@
 .container {
   width: 100wh;
   height: 100vh;
-  padding: 0 150px;
+  display: block;
+  }
+  @media (min-width: 576px) { 
+    .container {
+      width: 80%;
+      margin: 0 auto;
+    }
   }
