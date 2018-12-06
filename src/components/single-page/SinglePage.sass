@@ -1,0 +1,41 @@
+.header 
+    background-color: #cccccc
+    display: block
+    height: 60px
+    line-height: 10px
+    border: 1px solid #cccccc
+    box-shadow: 9px 0px 15px 0px rgba(173,173,173,0.71)
+    margin-top: 10px
+    a 
+        text-decoration: none
+        border: 1px solid gray
+        color: black
+        cursor: pointer
+        display: inline-block
+        padding: 20px 5px
+        margin: 5px 5px
+        border-radius: 10px
+        &:hover
+            background-color: gray
+            border: 1px solid transparent
+            color: #eeeeee
+            transition: all .3s
+        @media (min-width: 992px) 
+            padding: 20px
+            margin: 5px 20px
+.single-page
+    border: 1px solid #cccccc
+    box-shadow: 9px 0px 15px 0px rgba(173,173,173,0.71)
+    @media (min-width: 992px) 
+            padding: 20px
+    h2 
+        padding: 0 5px
+        span 
+            font-weight: 400
+    p 
+        font-size: 14px
+        background-color: #ccc
+        padding: 15px 5px 
+        margin: 0
+        &:nth-child(odd)
+            background-color: #eee
