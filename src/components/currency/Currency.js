@@ -36,21 +36,29 @@ class Currency extends Component {
         for (let i = 0; i < warningBtn.length; i++) {
             warningBtn[i].style.display="none";
         }
-        let isNumber = /^[0-9.]*$/;     
+        let isNumber = /^[0-9.]*$/;  
         if (isNumber.test(e.target.value) === true){
             const newCurrencies = [...this.state.currencies];
-            let allButtons = document.querySelectorAll(".submit-btn");
             newCurrencies[index].myValueCoin = e.target.value;
             newCurrencies[index].myCalculatedValueCoin = parseFloat(e.target.value * newCurrencies[index].quote.USD.price).toFixed(2);
-            newCurrencies[index].myValueCoin ? allButtons[index].removeAttribute('disabled', true) : allButtons[index].setAttribute('disabled', false);
             this.setState({ currencies: newCurrencies });
         }else {
             warningBtn[index].style.display="block";
-        }    
+        }  
+    }
+
+    //giving a functionality to Submit button on press
+    activeButton = (e, index) => {
+        if (e.charCode === 13){
+            let allButtons = document.querySelectorAll(".submit-btn");
+            const newCurrencies = [...this.state.currencies];
+            newCurrencies[index].myValueCoin = e.target.value;
+            newCurrencies[index].myValueCoin ? allButtons[index].removeAttribute('disabled', true) : allButtons[index].setAttribute('disabled', false);
+        }   
     }
 
     //preparing data to set in localStorage
-    setLocalStorage = (e, currency) => {
+    setLocalStorage = currency => {
         let newStorageArray = [];
         const storageObj = {
             name: currency.name,
@@ -102,12 +110,13 @@ class Currency extends Component {
                                         className="currency-input" 
                                         type="text" 
                                         onChange={(e) => this.saveOwnCurrency(e, index)}
+                                        onKeyPress={(e) => this.activeButton(e,index)}
                                     />
                                     <span className="warning">Oops. You should enter a number.</span>
                                     <button 
                                     className="submit-btn" 
                                     value="Submit"
-                                    onClick={(e)=>this.setLocalStorage(e, currency)}
+                                    onClick={()=>this.setLocalStorage(currency)}
                                     disabled
                                     >
                                     Submit
