@@ -1,0 +1,59 @@
+.currency-table 
+    display: table 
+    text-align: center
+    border: 1px solid #cccccc
+    width: 100%
+    border-spacing: 5px
+    
+thead 
+    display: table-header-group
+    background-color: #cccccc
+    width: 100%
+
+    tr 
+        display: table-row
+    
+    th 
+        padding: 5px
+
+tbody 
+    width: 100%
+    background-color: #cccccc
+
+    tr 
+        display: table-row
+    
+    td 
+        display: table-cell
+        padding: 5px
+    
+    .userValue 
+        width: 20%
+    
+    .submit-btn 
+        margin-top: 5px
+        padding: 5px 15px
+        width: 100%
+        line-height: 5px
+ 
+    
+.loading 
+    position: absolute
+    top: 50%
+    left: 50%
+    transform: translate(-50%,-50%)
+    border: 8px solid #eee
+    border-top: 8px solid #cccccc
+    border-radius: 50%
+    width: 40px
+    height: 40px
+    animation: spin 2s linear infinite
+    @keyframes spin 
+        0%  
+            transform: rotate(0deg) 
+        100%  
+            transform: rotate(360deg) 
+
+
+
+

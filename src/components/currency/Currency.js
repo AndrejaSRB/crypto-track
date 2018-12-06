@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import './Currency.css'
+import './Currency.sass';
+import { Link } from 'react-router-dom'
 
 class Currency extends Component {
     state = {
@@ -47,7 +48,7 @@ class Currency extends Component {
                     this.state.currencies.map((currency, index) => {            
                         return(
                             <tr key={currency.id}>
-                                <td>{currency.name}</td>
+                                <Link to={currency.name}>{currency.name}</Link>
                                 <td>{currency.symbol}</td>
                                 <td>{parseFloat(currency.quote.USD.price).toFixed(2)}</td>
                                 <td
