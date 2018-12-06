@@ -1,43 +1,59 @@
 import React, { Component } from 'react';
 import './Currency.sass';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 
 class Currency extends Component {
     state = {
         currencies: [],
         storageArray: []
     }
+
+    // calling a function for fetching
+    // setting interval on every 60s to recall API
     componentDidMount = () => {
         this.getCurrencies('https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?CMC_PRO_API_KEY=a2a4a6fb-2033-4d55-8751-88e2434d6985');
         setInterval(() => this.getCurrencies('https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?CMC_PRO_API_KEY=a2a4a6fb-2033-4d55-8751-88e2434d6985'), 60000);
     };
 
+    //fatching API
+    //setting fetching data in state
     getCurrencies = (url) => {
         fetch(url)
         .then(res => res.json())
         .then(res => {
-            this.setState({currencies: res.data.slice(0,50)})            
+            this.setState({currencies: res.data.slice(0,50)});           
         })
     };
 
+    //taking input value and checking if it's a number and displaying warning message
+    //adding and removing disabled buttons attribute
+    //caluclate my value of currency in $
     saveOwnCurrency= (e, index) => {
-        const newCurrencies = [...this.state.currencies];
-        let allButtons = document.querySelectorAll(".submit-btn");
-        newCurrencies[index].myValueCoin = e.target.value;
-        newCurrencies[index].myCalculatedValueCoin = parseFloat(e.target.value * newCurrencies[index].quote.USD.price).toFixed(2);
-        newCurrencies[index].myValueCoin ? allButtons[index].removeAttribute('disabled', true) : allButtons[index].setAttribute('disabled', false);
-        this.setState({ currencies: newCurrencies });
-        
+        let warningBtn = document.querySelectorAll('.warning');
+        for (let i = 0; i < warningBtn.length; i++) {
+            warningBtn[i].style.display="none";
+        }
+        let isNumber = /^[0-9.]*$/;     
+        if (isNumber.test(e.target.value) === true){
+            const newCurrencies = [...this.state.currencies];
+            let allButtons = document.querySelectorAll(".submit-btn");
+            newCurrencies[index].myValueCoin = e.target.value;
+            newCurrencies[index].myCalculatedValueCoin = parseFloat(e.target.value * newCurrencies[index].quote.USD.price).toFixed(2);
+            newCurrencies[index].myValueCoin ? allButtons[index].removeAttribute('disabled', true) : allButtons[index].setAttribute('disabled', false);
+            this.setState({ currencies: newCurrencies });
+        }else {
+            warningBtn[index].style.display="block";
+        }    
     }
 
-    render() {                  
+    render() {              
         return ( 
             <table className="currency-table">
                 <thead>
                     <tr>
                         <th>Name</th>
                         <th>Short Name</th>
-                        <th>$ Value</th>
+                        <th>$ value</th>
                         <th>last 24h</th>
                         <th>Amout you own</th>
                         <th>$ value of your coin</th>
@@ -59,9 +75,10 @@ class Currency extends Component {
                                 <td className="userValue">
                                     <input 
                                         className="currency-input" 
-                                        type="number" 
+                                        type="text" 
                                         onChange={(e) => this.saveOwnCurrency(e, index)}
                                     />
+                                    <span className="warning">It's not a number!!!</span>
                                     <button 
                                     className="submit-btn" 
                                     value="Submit"
@@ -70,7 +87,7 @@ class Currency extends Component {
                                     Submit
                                     </button>
                                 </td>
-                                <td>{currency.myCalculatedValueCoin || 0}</td>
+                                <td>{currency.myCalculatedValueCoin || "0.00"}$</td>
                             </tr>
                         )
                         })
