@@ -5,7 +5,8 @@ import { Link } from 'react-router-dom';
 class Currency extends Component {
     state = {
         currencies: [],
-        storageArray: []
+        storageArray: [],
+        storage: []
     }
 
     // calling a function for fetching
@@ -13,6 +14,8 @@ class Currency extends Component {
     componentDidMount = () => {
         this.getCurrencies('https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?CMC_PRO_API_KEY=a2a4a6fb-2033-4d55-8751-88e2434d6985');
         setInterval(() => this.getCurrencies('https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?CMC_PRO_API_KEY=a2a4a6fb-2033-4d55-8751-88e2434d6985'), 60000);
+
+        this.getLocalStorage()
     };
 
     //fatching API
@@ -46,7 +49,29 @@ class Currency extends Component {
         }    
     }
 
-    render() {              
+    //preparing data to set in localStorage
+    setLocalStorage = (e, currency) => {
+        let newStorageArray = [];
+        const storageObj = {
+            name: currency.name,
+            value: currency.myValueCoin
+        }
+        newStorageArray = [...this.state.storageArray, storageObj];
+        this.setState({ storageArray: newStorageArray});
+    }
+
+    //taking data from localStorage
+    getLocalStorage = () => {
+        localStorage.getItem('storage');
+        let getStorage = JSON.parse(localStorage.getItem('storage'));
+        this.setState({storage : getStorage});
+    }
+
+    render() {   
+        if (this.state.storageArray.length > 0){
+            localStorage.setItem('storage', JSON.stringify(this.state.storageArray));
+        }
+
         return ( 
             <table className="currency-table">
                 <thead>
@@ -78,10 +103,11 @@ class Currency extends Component {
                                         type="text" 
                                         onChange={(e) => this.saveOwnCurrency(e, index)}
                                     />
-                                    <span className="warning">It's not a number!!!</span>
+                                    <span className="warning">Oops. You should enter a number.</span>
                                     <button 
                                     className="submit-btn" 
                                     value="Submit"
+                                    onClick={(e)=>this.setLocalStorage(e, currency)}
                                     disabled
                                     >
                                     Submit

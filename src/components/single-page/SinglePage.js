@@ -34,7 +34,8 @@ class Currency extends Component {
     render() {  
         const selectedCurrency = this.state.selectedCurrency;
         const date = new Date(selectedCurrency.date_added); 
-        const lastUpdate = new Date(selectedCurrency.last_updated);        
+        const lastUpdate = new Date(selectedCurrency.last_updated);
+      
         return ( 
             <div>
                 {this.state.currencies.length ? (
@@ -44,23 +45,59 @@ class Currency extends Component {
                      </div>
                      <div className="container">
                          <div className="single-page">
-                             <h2> <span>Currency name:</span> {selectedCurrency.name || "-"}</h2>
+                            <h2> <span>Currency name:</span> {selectedCurrency.name || "-"}</h2>
 
-                             <p>Symbol: <span>{selectedCurrency.symbol || "-"}</span></p>
+                            <p>Symbol: <span>{selectedCurrency.symbol || "-"}</span></p>
 
-                             <p>ID number: <span>{selectedCurrency.id || "-"}</span></p>
+                            <p>ID number: <span>{selectedCurrency.id || "-"}</span></p>
 
-                             <p>Date cryptocurrency was added to the system: <span>{date.getDate()}/{date.getMonth()}/{date.getFullYear() || "-"}</span></p>
+                            <p>Date cryptocurrency was added to the system: <span>{date.getDate()}/{date.getMonth()}/{date.getFullYear() || "-"}</span></p>
 
-                             <p>The currency was updated last time: <span>{lastUpdate.getDate()}/{lastUpdate.getMonth()}/{lastUpdate.getFullYear() || "-"}</span></p>
+                            <p>The currency was updated last time: 
+                                <span>
+                                    {" " + lastUpdate.getDate()}/{lastUpdate.getMonth()}/{lastUpdate.getFullYear() || "-"}
+                                </span>
+                            </p>
 
-                             <p>Circulating Supply: <span>{selectedCurrency.circulating_supply || "-"}</span></p>
+                            <p>Circulating Supply: 
+                                 <span>
+                                    {" " + parseFloat(selectedCurrency.circulating_supply).toFixed(2) || "-"}
+                                 </span>
+                            </p>
 
-                             <p>Max Supply: <span>{selectedCurrency.max_supply|| "-"}</span> BTC</p>
+                             <p>Max Supply: <span>{" " + selectedCurrency.max_supply|| "-"}</span> BTC</p>
 
-                             <p>Number of market pairs across all exchanges trading each currency: <span>{selectedCurrency.num_market_pairs || "-"}</span></p>
+                             <p>Number of market pairs across all exchanges trading each currency: 
+                                 <span>
+                                    {" " + selectedCurrency.num_market_pairs || "-"}
+                                 </span>
+                            </p>
 
-                             <p>Approximate total amount of coins in existence right now: <span>{selectedCurrency.total_supply}</span></p>
+                             <p>Approximate total amount of coins in existence right now: 
+                                <span>
+                                    {" " + (parseFloat(selectedCurrency.total_supply).toFixed(2)).toLocaleString('en-US', {style: 'decimal'})} 
+                                </span>
+                            </p>
+                            <p>CMC Rank: 
+                                <span>
+                                    {" " + selectedCurrency.cmc_rank || "-"}
+                                </span>
+                            </p>
+                            <p>Slug: 
+                                <span>
+                                    {" " + selectedCurrency.slug || "-"}
+                                </span>
+                            </p>
+                            <p>Platform: 
+                                <span>
+                                    {" " + selectedCurrency.platform || "-"}
+                                </span>
+                            </p>
+                            <p>Number of market pairs: 
+                                <span>
+                                    {" " + selectedCurrency.num_market_pairs || "-"}
+                                </span>
+                            </p>
                          </div>
                      </div>
                  </div>
