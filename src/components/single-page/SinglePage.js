@@ -35,7 +35,7 @@ class Currency extends Component {
         const selectedCurrency = this.state.selectedCurrency;
         const date = new Date(selectedCurrency.date_added); 
         const lastUpdate = new Date(selectedCurrency.last_updated);
-      
+        
         return ( 
             <div>
                 {this.state.currencies.length ? (
@@ -51,6 +51,30 @@ class Currency extends Component {
 
                             <p>ID number: <span>{selectedCurrency.id || "-"}</span></p>
 
+                            <p>Price: 
+                                <span>
+                                {selectedCurrency.quote ? 
+                                    parseFloat(selectedCurrency.quote.USD.price).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') 
+                                    : null}$
+                                </span>
+                            </p>
+
+                            <p>Volume (24h): 
+                                <span>
+                                {selectedCurrency.quote ? 
+                                    parseFloat(selectedCurrency.quote.USD.volume_24h).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') 
+                                    : null}$
+                                </span>
+                            </p>
+
+                            <p>Last (24h): 
+                                <span>
+                                {selectedCurrency.quote ? 
+                                    parseFloat(selectedCurrency.quote.USD.percent_change_24h).toFixed(2)
+                                    : "-"}$
+                                </span>
+                            </p>
+                            
                             <p>Date cryptocurrency was added to the system: <span>{date.getDate()}/{date.getMonth()}/{date.getFullYear() || "-"}</span></p>
 
                             <p>The currency was updated last time: 
@@ -61,11 +85,16 @@ class Currency extends Component {
 
                             <p>Circulating Supply: 
                                  <span>
-                                    {" " + parseFloat(selectedCurrency.circulating_supply).toFixed(2) || "-"}
+                                    {" " + parseFloat(selectedCurrency.circulating_supply).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') || "-"}
                                  </span>
                             </p>
 
-                             <p>Max Supply: <span>{" " + selectedCurrency.max_supply|| "-"}</span> BTC</p>
+                            <p>Max Supply: 
+                                 <span>
+                                    {" " + selectedCurrency.max_supply ? parseFloat(selectedCurrency.max_supply).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') 
+                                    : "-"}
+                                 </span> BTC
+                            </p>
 
                              <p>Number of market pairs across all exchanges trading each currency: 
                                  <span>
@@ -75,7 +104,7 @@ class Currency extends Component {
 
                              <p>Approximate total amount of coins in existence right now: 
                                 <span>
-                                    {" " + (parseFloat(selectedCurrency.total_supply).toFixed(2)).toLocaleString('en-US', {style: 'decimal'})} 
+                                    {" " + (parseFloat(selectedCurrency.total_supply).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'))} 
                                 </span>
                             </p>
                             <p>CMC Rank: 
@@ -88,14 +117,16 @@ class Currency extends Component {
                                     {" " + selectedCurrency.slug || "-"}
                                 </span>
                             </p>
-                            <p>Platform: 
-                                <span>
-                                    {" " + selectedCurrency.platform || "-"}
-                                </span>
-                            </p>
                             <p>Number of market pairs: 
                                 <span>
                                     {" " + selectedCurrency.num_market_pairs || "-"}
+                                </span>
+                            </p>
+                            <p>Market Cup: 
+                                <span>
+                                    {selectedCurrency.quote ? 
+                                        parseFloat(selectedCurrency.quote.USD.market_cap).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') 
+                                        : null}$
                                 </span>
                             </p>
                          </div>

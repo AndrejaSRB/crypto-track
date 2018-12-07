@@ -33,6 +33,8 @@ class Currency extends Component {
     //caluclate my value of currency in $
     saveOwnCurrency= (e, index) => {
         let warningBtn = document.querySelectorAll('.warning');
+        let allButtons = document.querySelectorAll(".submit-btn");
+ 
         for (let i = 0; i < warningBtn.length; i++) {
             warningBtn[i].style.display="none";
         }
@@ -40,20 +42,19 @@ class Currency extends Component {
         if (isNumber.test(e.target.value) === true){
             const newCurrencies = [...this.state.currencies];
             newCurrencies[index].myValueCoin = e.target.value;
-            newCurrencies[index].myCalculatedValueCoin = parseFloat(e.target.value * newCurrencies[index].quote.USD.price).toFixed(2);
+            newCurrencies[index].myCalculatedValueCoin = parseFloat(e.target.value * newCurrencies[index].quote.USD.price).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
             this.setState({ currencies: newCurrencies });
+            newCurrencies[index].myValueCoin ? allButtons[index].removeAttribute('disabled', true) : allButtons[index].setAttribute('disabled', false);
         }else {
             warningBtn[index].style.display="block";
         }  
     }
 
-    //giving a functionality to Submit button on press
+    //giving a functionality to Submit button on Enter
     activeButton = (e, index) => {
         if (e.charCode === 13){
             let allButtons = document.querySelectorAll(".submit-btn");
-            const newCurrencies = [...this.state.currencies];
-            newCurrencies[index].myValueCoin = e.target.value;
-            newCurrencies[index].myValueCoin ? allButtons[index].removeAttribute('disabled', true) : allButtons[index].setAttribute('disabled', false);
+            allButtons[index].removeAttribute('disabled', true)
         }   
     }
 
@@ -99,7 +100,7 @@ class Currency extends Component {
                             <tr key={currency.id}>
                                 <Link to={currency.name}>{currency.name}</Link>
                                 <td>{currency.symbol}</td>
-                                <td>{parseFloat(currency.quote.USD.price).toFixed(2)}</td>
+                                <td>{parseFloat(currency.quote.USD.price).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</td>
                                 <td
                                 style={currency.quote.USD.percent_change_24h < 0 ? {color : 'red'}: {color:'green'}}
                                 >
