@@ -31,7 +31,14 @@ class Currency extends Component {
             };
         };
     };
+
+    //converting numbers in proper type
+    convertNumbers = number => {
+        return parseFloat(number).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') 
+    }
+
     render() {  
+        
         const selectedCurrency = this.state.selectedCurrency;
         const date = new Date(selectedCurrency.date_added); 
         const lastUpdate = new Date(selectedCurrency.last_updated);
@@ -54,7 +61,7 @@ class Currency extends Component {
                             <p>Price: 
                                 <span>
                                 {selectedCurrency.quote ? 
-                                    parseFloat(selectedCurrency.quote.USD.price).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') 
+                                    this.convertNumbers(selectedCurrency.quote.USD.price) 
                                     : null}$
                                 </span>
                             </p>
@@ -62,8 +69,8 @@ class Currency extends Component {
                             <p>Volume (24h): 
                                 <span>
                                 {selectedCurrency.quote ? 
-                                    parseFloat(selectedCurrency.quote.USD.volume_24h).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') 
-                                    : null}$
+                                    this.convertNumbers(selectedCurrency.quote.USD.volume_24h)
+                                    : null} %
                                 </span>
                             </p>
 
@@ -85,13 +92,13 @@ class Currency extends Component {
 
                             <p>Circulating Supply: 
                                  <span>
-                                    {" " + parseFloat(selectedCurrency.circulating_supply).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') || "-"}
+                                    {" " + this.convertNumbers(selectedCurrency.circulating_supply) || "-"}
                                  </span>
                             </p>
 
                             <p>Max Supply: 
                                  <span>
-                                    {" " + selectedCurrency.max_supply ? parseFloat(selectedCurrency.max_supply).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') 
+                                    {" " + selectedCurrency.max_supply ? this.convertNumbers(selectedCurrency.max_supply) 
                                     : "-"}
                                  </span> BTC
                             </p>
@@ -104,7 +111,7 @@ class Currency extends Component {
 
                              <p>Approximate total amount of coins in existence right now: 
                                 <span>
-                                    {" " + (parseFloat(selectedCurrency.total_supply).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'))} 
+                                    {" " + this.convertNumbers(selectedCurrency.total_supply)} 
                                 </span>
                             </p>
                             <p>CMC Rank: 
@@ -125,7 +132,7 @@ class Currency extends Component {
                             <p>Market Cup: 
                                 <span>
                                     {selectedCurrency.quote ? 
-                                        parseFloat(selectedCurrency.quote.USD.market_cap).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') 
+                                        this.convertNumbers(selectedCurrency.quote.USD.market_cap) 
                                         : null}$
                                 </span>
                             </p>

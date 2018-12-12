@@ -3,10 +3,14 @@ import './Currency.sass';
 import { Link } from 'react-router-dom';
 
 class Currency extends Component {
-    state = {
-        currencies: [],
-        storageArray: [],
-        storage: []
+    
+    constructor(props){
+        super(props);
+        this.state = {
+            currencies: [],
+            storageArray: [],
+            storage: [],
+        }
     }
 
     // calling a function for fetching
@@ -32,29 +36,28 @@ class Currency extends Component {
     //adding and removing disabled buttons attribute
     //caluclate my value of currency in $
     saveOwnCurrency= (e, index) => {
-        let warningBtn = document.querySelectorAll('.warning');
-        let allButtons = document.querySelectorAll(".submit-btn");
- 
-        for (let i = 0; i < warningBtn.length; i++) {
-            warningBtn[i].style.display="none";
-        }
+        let currentWarningBtn = this.refs['span'+index];
+        let currentButton = this.refs['button'+index];
+        
+        currentWarningBtn.style.display="none"
+
         let isNumber = /^[0-9.]*$/;  
         if (isNumber.test(e.target.value) === true){
             const newCurrencies = [...this.state.currencies];
             newCurrencies[index].myValueCoin = e.target.value;
             newCurrencies[index].myCalculatedValueCoin = parseFloat(e.target.value * newCurrencies[index].quote.USD.price).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
             this.setState({ currencies: newCurrencies });
-            newCurrencies[index].myValueCoin ? allButtons[index].removeAttribute('disabled', true) : allButtons[index].setAttribute('disabled', false);
+            newCurrencies[index].myValueCoin ? currentButton.removeAttribute('disabled', true) : currentButton.setAttribute('disabled', false);
         }else {
-            warningBtn[index].style.display="block";
+            currentWarningBtn.style.display="block";
         }  
     }
 
     //giving a functionality to Submit button on Enter
     activeButton = (e, index) => {
         if (e.charCode === 13){
-            let allButtons = document.querySelectorAll(".submit-btn");
-            allButtons[index].removeAttribute('disabled', true)
+            let currentButton = this.refs['button'+index];
+            currentButton.removeAttribute('disabled', true)
         }   
     }
 
@@ -80,7 +83,6 @@ class Currency extends Component {
         if (this.state.storageArray.length > 0){
             localStorage.setItem('storage', JSON.stringify(this.state.storageArray));
         }
-
         return ( 
             <table className="currency-table">
                 <thead>
@@ -113,9 +115,10 @@ class Currency extends Component {
                                         onChange={(e) => this.saveOwnCurrency(e, index)}
                                         onKeyPress={(e) => this.activeButton(e,index)}
                                     />
-                                    <span className="warning">Oops. You should enter a number.</span>
+                                    <span className="warning" ref={'span'+index}>Oops. You should enter a number.</span>
                                     <button 
                                     className="submit-btn" 
+                                    ref={'button'+index}
                                     value="Submit"
                                     onClick={()=>this.setLocalStorage(currency)}
                                     disabled
